@@ -9,6 +9,7 @@ type VaultData = { [key: string]: string }[] | null;
 type CollectionsApiResponse = {
     collections: {
         original_collection_name: string;
+        collection_image: string;
         vault_address: string;
         is_draft: boolean;
     }[];
@@ -27,13 +28,14 @@ const useVaultData = (props: { chainId: string; signer: ethers.Signer }): VaultD
                       {
                           vaultAddress: item.vault_address,
                           originalName: item.original_collection_name,
+                          collectionImage: item.collection_image,
                       },
                   ],
         );
         const signer = props.signer;
         const dataList = [];
         for (const item of items) {
-            const { vaultAddress, originalName } = item;
+            const { vaultAddress, originalName, collectionImage } = item;
             const vault = new ethers.Contract(vaultAddress, vaultAbi, signer);
             const wrapContract = await vault.functions.wrapContract();
             const minDuration = durationToDays(await vault.functions.minDuration());
@@ -49,6 +51,7 @@ const useVaultData = (props: { chainId: string; signer: ethers.Signer }): VaultD
                     .toString() + '%';
             const payoutAddress = await vault.functions.payoutAddress();
             dataList.push({
+                collectionImage,
                 originalName,
                 marketContract,
                 collectionOwnerFeeRatio,

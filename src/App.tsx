@@ -9,7 +9,7 @@ function App() {
     if (!available) return <Heading>Please Install MetaMask.</Heading>;
     if (chainId === 'unknown') return null;
     return (
-        <Box backgroundColor={'#282c34'} minHeight={'100vh'} color={'white'}>
+        <Box backgroundColor="#282c34" minHeight="100vh" color="white" padding="2">
             <SwitchButtons chainId={chainId} chainName={chainName} />
             <EachVaultStatus chainId={chainId} signer={signer} />
         </Box>
