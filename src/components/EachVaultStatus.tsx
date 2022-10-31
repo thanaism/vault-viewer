@@ -12,7 +12,7 @@ const EachVaultStatus = (props: { chainId: string; signer: ethers.Signer }) => {
     return (
         <>
             {vaultData.map((data, index) => (
-                <Box maxW="800px" borderWidth="1px" borderRadius="lg" overflow={'scroll'} padding="2" margin="2">
+                <Box maxW="600px" borderWidth="1px" borderRadius="lg" padding="2" margin="2">
                     <Image
                         src={data.collectionImage}
                         borderColor="white"

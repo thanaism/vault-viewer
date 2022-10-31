@@ -4,7 +4,7 @@ import { toName } from '../utils/utils';
 const SwitchButtons = (props: { chainId: string; chainName: string }) => {
     const chainIds = ['1', '5', '137'];
     return (
-        <Box maxW="800px" borderWidth="1px" borderRadius="lg" overflow="hidden" padding="2" margin="2">
+        <Box maxW="600px" borderWidth="1px" borderRadius="lg" padding="2" margin="2">
             <Heading>chain: {props.chainName}</Heading>
             {chainIds
                 .filter((id) => Number(id) !== Number(props.chainId))
