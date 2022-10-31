@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import useMetamask from './hooks/useMetamask';
+import SwitchButtons from './components/SwitchButtons';
+import EachVaultStatus from './components/EachVaultStatus';
+import { Box, Heading } from '@chakra-ui/react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const { available, chainName, chainId, signer } = useMetamask();
+
+    if (!available) return <Heading>Please Install MetaMask.</Heading>;
+    if (chainId === 'unknown') return null;
+    return (
+        <Box backgroundColor={'#282c34'} minHeight={'100vh'} color={'white'}>
+            <SwitchButtons chainId={chainId} chainName={chainName} />
+            <EachVaultStatus chainId={chainId} signer={signer} />
+        </Box>
+    );
 }
 
 export default App;
