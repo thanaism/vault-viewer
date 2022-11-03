@@ -1,5 +1,5 @@
 import { ethers, Signer } from 'ethers';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
@@ -8,21 +8,27 @@ import { VaultPropForm } from './parts/VaultPropForm';
 export const CheckTokenId = (props: { signer: Signer; data: VaultData }) => {
   const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
   const [tokenId, setTokenId] = useState<string>('');
+  const [submitLabel, setSubmitLabel] = useState<string>('check');
 
   if (props.data.allAllowed === 'true') return null;
 
-  const getTokenIdAllowed = async () => {
-    const tokenIdAllowed = await vault.functions.getTokenIdAllowed(BN(tokenId));
-    setTokenId((prev) => `${prev}: ${BN(tokenIdAllowed).eq(BN(1))}`);
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSubmitLabel('check');
+    setTokenId(e.target.value);
+  };
+
+  const submit = async () => {
+    const tokenIdAllowed = BN(await vault.functions.getTokenIdAllowed(BN(tokenId))).eq(BN(1));
+    setSubmitLabel(tokenIdAllowed ? 'OK' : 'NG');
   };
 
   return (
     <VaultPropForm
       leftLabel="isAllowed"
       value={tokenId}
-      onChange={(e) => setTokenId(e.target.value)}
-      submit={getTokenIdAllowed}
-      submitLabel="check"
+      onChange={onChange}
+      submit={submit}
+      submitLabel={submitLabel}
       placeholder="token id"
     />
   );
