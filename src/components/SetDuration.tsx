@@ -25,7 +25,7 @@ export const SetDuraion = (props: { signer: Signer; data: VaultData }) => {
   return (
     <>
       <InputGroup marginBottom="2px">
-        <InputLeftAddon children="minDuration" width="25%" overflow="hidden" />
+        <InputLeftAddon children="minDur(day)" width="25%" overflow="hidden" />
         <Input width="60%" value={minDuration} onChange={(e) => setMinDuration(e.target.value)} />
         <InputRightElement width="15%">
           <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit}>
@@ -34,7 +34,7 @@ export const SetDuraion = (props: { signer: Signer; data: VaultData }) => {
         </InputRightElement>
       </InputGroup>
       <InputGroup marginBottom="2px">
-        <InputLeftAddon children="maxDuration" width="25%" overflow="hidden" />
+        <InputLeftAddon children="maxDur(day)" width="25%" overflow="hidden" />
         <Input width="60%" value={maxDuration} onChange={(e) => setMaxDuration(e.target.value)} />
       </InputGroup>
     </>
