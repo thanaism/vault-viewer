@@ -22,7 +22,7 @@ export const BN = (input: ResponseBigNumber | string | number) =>
 
 export const durationToDays = (duration: ResponseBigNumber) => BN(duration).div(BN(86400)).toString();
 
-export const unwrapParenthesesIfSingleElement = (input: unknown) => {
+export const unwrapParenthesesIfSingleElement = <T>(input: T[]) => {
   if (!Array.isArray(input)) throw Error('input is not an array');
   if (input.length !== 1) throw Error('element is not single');
   return input[0];
