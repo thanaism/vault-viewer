@@ -13,8 +13,7 @@ export const SetDuraion = (props: { signer: Signer; data: VaultData }) => {
   const submit = async () => {
     const minDurationBySec = BN(minDuration).mul(BN(86400));
     const maxDurationBySec = BN(maxDuration).mul(BN(86400));
-    await vault.functions.setDuration(minDurationBySec, maxDurationBySec);
-    const gasLimit = (await vault.estimateGas.setDuration(minDurationBySec, maxDurationBySec)).mul(1.2);
+    const gasLimit = (await vault.estimateGas.setDuration(minDurationBySec, maxDurationBySec)).mul(BN(12)).div(BN(10));
     const { maxPriorityFeePerGas, maxFeePerGas } = await vault.provider.getFeeData();
     await vault.setDuration(minDurationBySec, maxDurationBySec, {
       maxPriorityFeePerGas,
