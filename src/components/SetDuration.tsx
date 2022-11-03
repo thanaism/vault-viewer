@@ -28,7 +28,7 @@ export const SetDuraion = (props: { signer: Signer; data: VaultData }) => {
         <InputLeftAddon children="minDur(day)" width="25%" overflow="hidden" />
         <Input width="60%" value={minDuration} onChange={(e) => setMinDuration(e.target.value)} />
         <InputRightElement width="15%">
-          <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit}>
+          <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit} minW="100%" ml="5px">
             update
           </Button>
         </InputRightElement>

@@ -32,7 +32,7 @@ export const SetMinPrices = (props: { signer: Signer; data: VaultData }) => {
           <Input width="60%" value={value.minPrice} onChange={(e) => updateMinPrice(key, e)} />
           {i === 0 && (
             <InputRightElement width="15%">
-              <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit}>
+              <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit} minW="100%" ml="5px">
                 update
               </Button>
             </InputRightElement>

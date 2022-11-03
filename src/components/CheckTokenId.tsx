@@ -18,10 +18,10 @@ export const CheckTokenId = (props: { signer: Signer; data: VaultData }) => {
 
   return (
     <InputGroup>
-      <InputLeftAddon children="isAllowed" width="25%" overflow="hidden" bgColor="blue.700" color="white" />
+      <InputLeftAddon children="isAllowed" width="25%" overflow="hidden" />
       <Input placeholder="token id" value={tokenId} onChange={(e) => setTokenId(e.target.value)} width="60%" />
       <InputRightElement width="15%">
-        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={getTokenIdAllowed}>
+        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={getTokenIdAllowed} minW="100%" ml="5px">
           check
         </Button>
       </InputRightElement>

@@ -25,7 +25,7 @@ export const SetOwnerFeeRatio = (props: { signer: Signer; data: VaultData }) => 
       <InputLeftAddon children="ownerFee(%)" width="25%" overflow="hidden" />
       <Input width="60%" value={feeRatio} onChange={(e) => setFeeRaio(e.target.value)} />
       <InputRightElement width="15%">
-        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit}>
+        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit} minW="100%" ml="5px">
           update
         </Button>
       </InputRightElement>
