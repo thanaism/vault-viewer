@@ -18,7 +18,7 @@ export const SetMinPrices = (props: {
   const submit = async () => {
     const prices = Object.values(minPrices).map((e) => BN(e.minPrice));
     const tokens = Object.values(minPrices).map((e) => e.paymentToken);
-    const gasLimit = (await vault.estimateGas.setMinPrices(prices, tokens)).mul(1.2);
+    const gasLimit = (await vault.estimateGas.setMinPrices(prices, tokens)).mul(BN(12)).div(BN(10));
     const { maxPriorityFeePerGas, maxFeePerGas } = await vault.provider.getFeeData();
     await vault.setMinPrices(prices, tokens, {
       maxPriorityFeePerGas,

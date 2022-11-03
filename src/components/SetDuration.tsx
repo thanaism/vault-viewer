@@ -15,8 +15,8 @@ export const SetDuraion = (props: {
   const [maxDuration, setMaxDuration] = useState<string>(props.maxDuration);
 
   const submit = async () => {
-    const minDurationBySec = BN(minDuration).mul(BN(864000));
-    const maxDurationBySec = BN(maxDuration).mul(BN(864000));
+    const minDurationBySec = BN(minDuration).mul(BN(86400));
+    const maxDurationBySec = BN(maxDuration).mul(BN(86400));
     await vault.functions.setDuration(minDurationBySec, maxDurationBySec);
     const gasLimit = (await vault.estimateGas.setDuration(minDurationBySec, maxDurationBySec)).mul(1.2);
     const { maxPriorityFeePerGas, maxFeePerGas } = await vault.provider.getFeeData();
