@@ -5,6 +5,7 @@ import { SetMinPrices } from './SetMinPrices';
 import { SetDuraion } from './SetDuration';
 import { CheckTokenId } from './CheckTokenId';
 import { ReadOnlyVaultProps } from './ReadOnlyVaultProps';
+import { SetOwnerFeeRatio } from './SetOwnerFeeRatio';
 
 const EachVaultStatus = (props: { chainId: string; signer: Signer }) => {
   const vaultData = useVaultData(props);
@@ -20,6 +21,7 @@ const EachVaultStatus = (props: { chainId: string; signer: Signer }) => {
           <ReadOnlyVaultProps data={data} />
           <SetMinPrices signer={signer} data={data} key={data.vaultAddress + 'minPrices'} />
           <SetDuraion signer={signer} data={data} key={data.vaultAddress + 'duration'} />
+          <SetOwnerFeeRatio signer={signer} data={data} key={data.vaultAddress + 'feeRatio'} />
           <CheckTokenId data={data} signer={props.signer} />
         </Box>
       ))}

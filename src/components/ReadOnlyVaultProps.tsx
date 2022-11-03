@@ -4,7 +4,9 @@ import { VaultData } from '../hooks/useVaultData';
 export const ReadOnlyVaultProps = (props: { data: VaultData }) => (
   <>
     {Object.entries(props.data)
-      .filter((item) => !['collectionImage', 'minPrices', 'minDuration', 'maxDuration'].includes(item[0]))
+      .filter(
+        (item) => !['collectionImage', 'minPrices', 'minDuration', 'maxDuration', 'ownerFeeRatio'].includes(item[0]),
+      )
       .map(([key, value]) => (
         <InputGroup marginBottom="2px" key={props.data.vaultAddress + key}>
           <InputLeftAddon children={key} width="25%" overflow="hidden" />
