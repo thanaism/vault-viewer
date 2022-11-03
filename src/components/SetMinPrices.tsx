@@ -1,16 +1,13 @@
 import { Button, Input, InputGroup, InputLeftAddon, InputRightElement } from '@chakra-ui/react';
 import { Signer, ethers } from 'ethers';
 import { useState } from 'react';
+import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
 
-export const SetMinPrices = (props: {
-  vaultAddress: string;
-  signer: Signer;
-  minPrices: Record<string, Record<string, string>>;
-}) => {
-  const vault = new ethers.Contract(props.vaultAddress, vaultAbi, props.signer);
-  const [minPrices, setMinPrices] = useState<Record<string, Record<string, string>>>(props.minPrices);
+export const SetMinPrices = (props: { signer: Signer; data: VaultData }) => {
+  const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
+  const [minPrices, setMinPrices] = useState<Record<string, Record<string, string>>>(props.data.minPrices);
 
   const updateMinPrice = (key: string, e: any) =>
     setMinPrices((prev) => ({ ...prev, [key]: { paymentToken: prev![key].paymentToken, minPrice: e.target.value } }));
@@ -30,7 +27,7 @@ export const SetMinPrices = (props: {
   return (
     <>
       {Object.entries(minPrices).map(([key, value], i) => (
-        <InputGroup marginBottom="2px">
+        <InputGroup marginBottom="2px" key={key}>
           <InputLeftAddon children={`minPrice(${key})`} width="25%" overflow="hidden" />
           <Input width="60%" value={value.minPrice} onChange={(e) => updateMinPrice(key, e)} />
           {i === 0 && (

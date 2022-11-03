@@ -1,18 +1,14 @@
 import { Button, Input, InputGroup, InputLeftAddon, InputRightElement } from '@chakra-ui/react';
 import { Signer, ethers } from 'ethers';
 import { useState } from 'react';
+import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
 
-export const SetDuraion = (props: {
-  vaultAddress: string;
-  signer: Signer;
-  minDuration: string;
-  maxDuration: string;
-}) => {
-  const vault = new ethers.Contract(props.vaultAddress, vaultAbi, props.signer);
-  const [minDuration, setMinDuration] = useState<string>(props.minDuration);
-  const [maxDuration, setMaxDuration] = useState<string>(props.maxDuration);
+export const SetDuraion = (props: { signer: Signer; data: VaultData }) => {
+  const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
+  const [minDuration, setMinDuration] = useState<string>(props.data.minDuration);
+  const [maxDuration, setMaxDuration] = useState<string>(props.data.maxDuration);
 
   const submit = async () => {
     const minDurationBySec = BN(minDuration).mul(BN(86400));
