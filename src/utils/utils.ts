@@ -27,3 +27,8 @@ export const unwrapParenthesesIfSingleElement = <T>(input: T[]) => {
   if (input.length !== 1) throw Error('element is not single');
   return input[0];
 };
+
+export const avoidIpfs = (imageUrl: string) => {
+  if (imageUrl.slice(0, 4) === 'ipfs') return 'https://ipfs.io/ipfs' + imageUrl.slice(6);
+  return imageUrl;
+};
