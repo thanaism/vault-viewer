@@ -1,5 +1,5 @@
-import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
 import { VaultData } from '../hooks/useVaultData';
+import { VaultPropForm } from './parts/VaultPropForm';
 
 export const ReadOnlyVaultProps = (props: { data: VaultData }) => (
   <>
@@ -8,10 +8,7 @@ export const ReadOnlyVaultProps = (props: { data: VaultData }) => (
         (item) => !['collectionImage', 'minPrices', 'minDuration', 'maxDuration', 'ownerFeeRatio'].includes(item[0]),
       )
       .map(([key, value]) => (
-        <InputGroup marginBottom="2px" key={props.data.vaultAddress + key}>
-          <InputLeftAddon children={key} width="25%" overflow="hidden" />
-          <Input value={value as string} readOnly />
-        </InputGroup>
+        <VaultPropForm readOnly={true} leftLabel={key} value={value as string} />
       ))}
   </>
 );

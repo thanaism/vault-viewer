@@ -1,9 +1,9 @@
-import { Button, Input, InputGroup, InputLeftAddon, InputRightElement } from '@chakra-ui/react';
 import { ethers, Signer } from 'ethers';
 import { useState } from 'react';
 import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
+import { VaultPropForm } from './parts/VaultPropForm';
 
 export const CheckTokenId = (props: { signer: Signer; data: VaultData }) => {
   const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
@@ -17,14 +17,13 @@ export const CheckTokenId = (props: { signer: Signer; data: VaultData }) => {
   };
 
   return (
-    <InputGroup>
-      <InputLeftAddon children="isAllowed" width="25%" overflow="hidden" />
-      <Input placeholder="token id" value={tokenId} onChange={(e) => setTokenId(e.target.value)} width="60%" />
-      <InputRightElement width="15%">
-        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={getTokenIdAllowed} minW="100%" ml="5px">
-          check
-        </Button>
-      </InputRightElement>
-    </InputGroup>
+    <VaultPropForm
+      leftLabel="isAllowed"
+      value={tokenId}
+      onChange={(e) => setTokenId(e.target.value)}
+      submit={getTokenIdAllowed}
+      submitLabel="check"
+      placeholder="token id"
+    />
   );
 };

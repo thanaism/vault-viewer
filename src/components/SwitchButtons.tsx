@@ -26,7 +26,7 @@ const SwitchButton = (props: { chainId: string; key: number }) => {
     });
   };
   return (
-    <Button margin="0.5" onClick={changeTo}>
+    <Button margin="0.5" onClick={changeTo} size="sm">
       to: {toName(props.chainId)}
     </Button>
   );

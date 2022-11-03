@@ -1,9 +1,9 @@
-import { Button, Input, InputGroup, InputLeftAddon, InputRightElement } from '@chakra-ui/react';
 import { Signer, ethers } from 'ethers';
 import { useState } from 'react';
 import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
+import { VaultPropForm } from './parts/VaultPropForm';
 
 export const SetOwnerFeeRatio = (props: { signer: Signer; data: VaultData }) => {
   const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
@@ -21,14 +21,12 @@ export const SetOwnerFeeRatio = (props: { signer: Signer; data: VaultData }) => 
   };
 
   return (
-    <InputGroup marginBottom="2px">
-      <InputLeftAddon children="ownerFee(%)" width="25%" overflow="hidden" />
-      <Input width="60%" value={feeRatio} onChange={(e) => setFeeRaio(e.target.value)} />
-      <InputRightElement width="15%">
-        <Button rounded="full" colorScheme={'blackAlpha'} height="70%" onClick={submit} minW="100%" ml="5px">
-          update
-        </Button>
-      </InputRightElement>
-    </InputGroup>
+    <VaultPropForm
+      leftLabel="ownerFee(%)"
+      value={feeRatio}
+      onChange={(e) => setFeeRaio(e.target.value)}
+      submit={submit}
+      submitLabel="update"
+    />
   );
 };
