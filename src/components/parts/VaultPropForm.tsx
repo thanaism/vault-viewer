@@ -1,8 +1,8 @@
 import { Button, Input, InputGroup, InputLeftAddon, InputRightElement } from '@chakra-ui/react';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
 
 export const VaultPropForm = (props: {
-  leftLabel: string;
+  leftLabel: string | ReactNode;
   value: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;

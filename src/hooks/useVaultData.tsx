@@ -73,13 +73,13 @@ const getSingleVaultPromise = async (signer: Signer, backendVaultProp: BackendVa
     { originalName },
     { collectionImage },
     Promise.all(await getMinPricePromises(vault)).then((res) => ({ minPrices: Object.fromEntries(res) })),
-    vault.functions.wrapContract().then((res) => ({ wrapContract: res as string })),
+    vault.functions.wrapContract().then((res) => ({ wrap: String(res) })),
     vault.functions.minDuration().then((res) => ({ minDuration: durationToDays(res) })),
     vault.functions.maxDuration().then((res) => ({ maxDuration: durationToDays(res) })),
     vault.functions.allTokenIdAllowed().then((res) => ({ allAllowed: BN(res).eq(BN(1)).toString() })),
-    vault.functions.marketContract().then((res) => ({ marketContract: res as string })),
+    vault.functions.marketContract().then((res) => ({ market: String(res) })),
     vault.functions.collectionOwnerFeeRatio().then((res) => ({ ownerFeeRatio: BN(res).div(BN(1000)).toString() })),
-    vault.functions.payoutAddress().then((res) => ({ payoutAddress: res as string })),
+    vault.functions.payoutAddress().then((res) => ({ payout: String(res) })),
   ];
   const resolved = await Promise.all(vaultContractCallPromises);
   return resolved.reduce((prev, now) => (prev != null ? { ...prev, ...now } : now), {}) as VaultData;
