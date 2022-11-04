@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
-import { toName } from '../utils/utils';
+import { chainName as toChainName } from '../utils/utils';
 import useBoolean from './useBoolean';
 
 const metamaskConnected = atom<boolean>({
@@ -61,7 +61,7 @@ const useMetamask = () => {
 
     ethereum.on('chainChanged', (chainId) => {
       setChainId(chainId);
-      setChainName(toName(chainId));
+      setChainName(toChainName(chainId));
     });
 
     initialized.setTrue();
@@ -86,7 +86,7 @@ const useMetamask = () => {
     const provider = getProvider();
     const chainId = await provider.send('net_version', []);
     setChainId(chainId);
-    setChainName(toName(chainId));
+    setChainName(toChainName(chainId));
     return chainId;
   };
 

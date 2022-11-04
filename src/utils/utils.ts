@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-export const toName = (chainId: string) => {
+export const chainName = (chainId: string) => {
   switch (Number(chainId)) {
     case 1:
       return 'mainnet';
@@ -10,6 +10,21 @@ export const toName = (chainId: string) => {
       return 'goerli';
     case 137:
       return 'polygon';
+    default:
+      return 'unknown';
+  }
+};
+
+export const explorerUrl = (chainId: string) => {
+  switch (Number(chainId)) {
+    case 1:
+      return 'https://etherscan.io';
+    case 4:
+      return 'https://rinkeby.etherscan.io';
+    case 5:
+      return 'https://goerli.etherscan.io';
+    case 137:
+      return 'https://polygonscan.com';
     default:
       return 'unknown';
   }

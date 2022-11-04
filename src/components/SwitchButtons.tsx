@@ -1,5 +1,5 @@
 import { Box, Button, Heading } from '@chakra-ui/react';
-import { toName } from '../utils/utils';
+import { chainName } from '../utils/utils';
 
 const SwitchButtons = (props: { chainId: string; chainName: string }) => {
   const chainIds = ['1', '5', '137'];
@@ -27,7 +27,7 @@ const SwitchButton = (props: { chainId: string; key: number }) => {
   };
   return (
     <Button margin="0.5" onClick={changeTo} size="sm">
-      to: {toName(props.chainId)}
+      to: {chainName(props.chainId)}
     </Button>
   );
 };
