@@ -7,13 +7,14 @@ import { VaultPropForm } from './parts/VaultPropForm';
 
 export const CheckTokenId = (props: { signer: Signer; data: VaultData }) => {
   const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
+  const initialSubmitLabel = 'check';
   const [tokenId, setTokenId] = useState<string>('');
-  const [submitLabel, setSubmitLabel] = useState<string>('check');
+  const [submitLabel, setSubmitLabel] = useState<string>(initialSubmitLabel);
 
   if (props.data.allAllowed === 'true') return null;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSubmitLabel('check');
+    setSubmitLabel(initialSubmitLabel);
     setTokenId(e.target.value);
   };
 
