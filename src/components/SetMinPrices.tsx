@@ -26,27 +26,16 @@ export const SetMinPrices = (props: { signer: Signer; data: VaultData }) => {
 
   return (
     <>
-      {Object.entries(minPrices).map(([key, value], i) => {
-        if (i === 0)
-          return (
-            <VaultPropForm
-              leftLabel={`minPrice (${key})`}
-              value={value.minPrice}
-              onChange={(e) => updateMinPrice(key, e)}
-              submit={submit}
-              submitLabel="update"
-              key={props.data.vaultAddress + key}
-            />
-          );
-        return (
-          <VaultPropForm
-            leftLabel={`minPrice (${key})`}
-            value={value.minPrice}
-            onChange={(e) => updateMinPrice(key, e)}
-            key={props.data.vaultAddress + key}
-          />
-        );
-      })}
+      {Object.entries(minPrices).map(([key, value], i) => (
+        <VaultPropForm
+          leftLabel={`minPrice (${key})`}
+          value={value.minPrice}
+          onChange={(e) => updateMinPrice(key, e)}
+          submit={i === 0 ? submit : undefined}
+          submitLabel={i === 0 ? 'update' : undefined}
+          key={props.data.vaultAddress + key}
+        />
+      ))}
     </>
   );
 };
