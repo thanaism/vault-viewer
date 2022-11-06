@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Signer, ethers, Contract } from 'ethers';
+import { Signer, ethers, Contract, BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 import { baseUrl, vaultAbi } from '../utils/constants';
 import { BN, durationToDays, unwrapParenthesesIfSingleElement } from '../utils/utils';
@@ -15,8 +15,10 @@ export type VaultData = {
   maxDuration: string;
   allAllowed: string;
   payoutAddress: string;
-  minPrices: Record<string, { paymentToken: string; minPrice: string }>;
+  minPrices: MinPrices;
 };
+
+export type MinPrices = Record<string, { paymentToken: string; minPrice: BigNumber; decimals: BigNumber }>;
 
 type CollectionsApiResponse = {
   collections: {
@@ -87,17 +89,33 @@ const getSingleVaultPromise = async (signer: Signer, backendVaultProp: BackendVa
 
 const getMinPricePromises = async (vault: Contract) => {
   const paymentTokens = unwrapParenthesesIfSingleElement((await vault.functions.getPaymentTokens()) as string[][]);
+
   const tokenNamePromises = paymentTokens.map((address) => {
     if (address === ethers.constants.AddressZero) return 'ETH';
     const abi = ['function symbol() view returns(string memory)'];
     return new ethers.Contract(address, abi, vault.signer).functions.symbol();
   });
-  const tokenNames = await Promise.all(tokenNamePromises);
-  return paymentTokens.map((paymentToken, i) =>
-    vault.functions
-      .minPrices(paymentToken)
-      .then((res) => [tokenNames[i], { paymentToken, minPrice: BN(res).toString() }]),
-  );
+
+  const decimalPromises = paymentTokens.map((address) => {
+    const abi = ['function decimals() view returns (uint256)'];
+    return new ethers.Contract(address, abi, vault.signer).functions
+      .decimals()
+      .then((res) => BN(res))
+      .catch((_) => BN(18));
+  });
+
+  const pricePromises = paymentTokens.map((address) => vault.functions.minPrices(address).then((res) => BN(res)));
+
+  const namePriceDecimals = await Promise.all([...tokenNamePromises, ...pricePromises, ...decimalPromises]);
+
+  return paymentTokens.map((paymentToken, i) => [
+    namePriceDecimals[i],
+    {
+      paymentToken,
+      minPrice: namePriceDecimals[i + paymentTokens.length],
+      decimals: namePriceDecimals[i + paymentTokens.length * 2],
+    },
+  ]);
 };
 
 export default useVaultData;
