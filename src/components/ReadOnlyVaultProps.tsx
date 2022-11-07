@@ -14,7 +14,7 @@ export const ReadOnlyVaultProps = (props: { chainId: string; data: VaultData }) 
       .map(([key, value]) => {
         const isAddress = value.slice(0, 2) === '0x';
         const url = `${explorerUrl(props.chainId)}/address/${value}`;
-        const label = isAddress ? <BlockExplorerLink url={url} inner={key} /> : key;
+        const label = isAddress ? <BlockExplorerLink url={url} inner={key.replace('Address', '')} /> : key;
         return <VaultPropForm readOnly leftLabel={label} value={value} key={key + value} />;
       })}
   </>

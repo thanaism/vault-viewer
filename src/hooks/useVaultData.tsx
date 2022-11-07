@@ -7,6 +7,7 @@ import { BN, durationToDays, unwrapParenthesesIfSingleElement } from '../utils/u
 export type VaultData = {
   collectionImage: string;
   originalName: string;
+  originalAddress: string;
   marketContract: string;
   ownerFeeRatio: string;
   vaultAddress: string;
@@ -23,6 +24,7 @@ export type MinPrices = Record<string, { paymentToken: string; minPrice: BigNumb
 type CollectionsApiResponse = {
   collections: {
     original_collection_name: string;
+    original_collection_address: string;
     collection_image: string;
     vault_address: string;
     is_draft: boolean;
@@ -50,6 +52,7 @@ const useVaultData = (props: { chainId: string; signer: ethers.Signer }): VaultD
 type BackendVaultProp = {
   vaultAddress: string;
   originalName: string;
+  originalAddress: string;
   collectionImage: string;
 };
 
@@ -61,27 +64,29 @@ const getVaultPropsFromBackend = async (chainId: number): Promise<BackendVaultPr
     .map((collection) => ({
       vaultAddress: collection.vault_address,
       originalName: collection.original_collection_name,
+      originalAddress: collection.original_collection_address,
       collectionImage: collection.collection_image,
     }));
   return backendVaultProps;
 };
 
 const getSingleVaultPromise = async (signer: Signer, backendVaultProp: BackendVaultProp) => {
-  const { vaultAddress, originalName, collectionImage } = backendVaultProp;
+  const { vaultAddress, originalName, originalAddress, collectionImage } = backendVaultProp;
   const vault = new ethers.Contract(vaultAddress, vaultAbi, signer);
 
   const vaultContractCallPromises = [
-    { vaultAddress },
-    { originalName },
     { collectionImage },
+    { originalName },
+    { originalAddress },
+    { vaultAddress },
     Promise.all(await getMinPricePromises(vault)).then((res) => ({ minPrices: Object.fromEntries(res) })),
-    vault.functions.wrapContract().then((res) => ({ wrap: String(res) })),
+    vault.functions.wrapContract().then((res) => ({ wrapAddress: String(res) })),
     vault.functions.minDuration().then((res) => ({ minDuration: durationToDays(res) })),
     vault.functions.maxDuration().then((res) => ({ maxDuration: durationToDays(res) })),
+    vault.functions.marketContract().then((res) => ({ marketAddress: String(res) })),
+    vault.functions.payoutAddress().then((res) => ({ payoutAddress: String(res) })),
     vault.functions.allTokenIdAllowed().then((res) => ({ allAllowed: BN(res).eq(BN(1)).toString() })),
-    vault.functions.marketContract().then((res) => ({ market: String(res) })),
     vault.functions.collectionOwnerFeeRatio().then((res) => ({ ownerFeeRatio: BN(res).div(BN(1000)).toString() })),
-    vault.functions.payoutAddress().then((res) => ({ payout: String(res) })),
   ];
   const resolved = await Promise.all(vaultContractCallPromises);
   return resolved.reduce((prev, now) => (prev != null ? { ...prev, ...now } : now), {}) as VaultData;
