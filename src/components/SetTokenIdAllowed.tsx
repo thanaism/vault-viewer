@@ -40,6 +40,8 @@ export const SetTokenIdAllowed = (props: { signer: Signer; data: VaultData }) =>
     }
   };
 
+  if (props.data.allAllowed === 'true') return null;
+
   return (
     <>
       <VaultPropForm
