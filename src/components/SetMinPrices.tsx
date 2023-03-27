@@ -1,17 +1,23 @@
 import { Signer, ethers, BigNumber } from 'ethers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { VaultData } from '../hooks/useVaultData';
 import { vaultAbi } from '../utils/constants';
 import { BN } from '../utils/utils';
 import { VaultPropForm } from './parts/VaultPropForm';
 
 export const SetMinPrices = (props: { signer: Signer; data: VaultData }) => {
-  const prices = Object.values(props.data.minPrices).map((value) => encodePrice(value.minPrice, value.decimals));
-  const names = Object.keys(props.data.minPrices);
-  const tokens = Object.values(props.data.minPrices).map((value) => value.paymentToken);
-  const decimals = Object.values(props.data.minPrices).map((value) => value.decimals);
+  const [prices, setPrices] = useState<string[]>([]);
+  const [names, setNames] = useState<string[]>([]);
+  const [tokens, setTokens] = useState<any>();
+  const [decimals, setDecimals] = useState<any>();
+  const [minPrices, setMinPrices] = useState<string[]>([]);
 
-  const [minPrices, setMinPrices] = useState<string[]>(prices);
+  useEffect(() => {
+    setPrices(Object.values(props.data.minPrices).map((value) => encodePrice(value.minPrice, value.decimals)));
+    setNames(Object.keys(props.data.minPrices));
+    setTokens(Object.values(props.data.minPrices).map((value) => value.paymentToken));
+    setDecimals(Object.values(props.data.minPrices).map((value) => value.decimals));
+  }, [props.data.minPrices]);
 
   const vault = new ethers.Contract(props.data.vaultAddress, vaultAbi, props.signer);
 
@@ -32,20 +38,20 @@ export const SetMinPrices = (props: { signer: Signer; data: VaultData }) => {
     });
   };
 
-  minPrices.forEach((price, i) => console.log(decodePrice(price, decimals[i]).toString()));
-
   return (
     <>
-      {names.map((name, i) => (
-        <VaultPropForm
-          leftLabel={`minPrice (${name})`}
-          value={minPrices[i]}
-          onChange={(e) => updateMinPrice(i, e)}
-          submit={i === 0 ? submit : undefined}
-          submitLabel={i === 0 ? 'update' : undefined}
-          key={props.data.vaultAddress + name}
-        />
-      ))}
+      {names.length &&
+        names.map((name, i) => (
+          <VaultPropForm
+            leftLabel={`minPrice (${name})`}
+            value={minPrices[i]}
+            placeholder={prices[i]}
+            onChange={(e) => updateMinPrice(i, e)}
+            submit={i === 0 ? submit : undefined}
+            submitLabel={i === 0 ? 'update' : undefined}
+            key={props.data.vaultAddress + name}
+          />
+        ))}
     </>
   );
 };
