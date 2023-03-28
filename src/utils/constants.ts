@@ -16,6 +16,7 @@ export const vaultAbi = [
   'function minPrices(address paymentToken) view returns (uint256)',
   'function setMinPrices(uint256[] memory minPrices, address[] memory paymentTokens)',
   'function setCollectionOwnerFeeRatio(uint256 feeRatio)',
+  'function setPayoutAddress(address payoutAddress)',
   'function setDuration(uint256 minDuration, uint256 maxDuration)',
   'function setTokenIdAllowed(uint256[] calldata tokenIds, uint256[] calldata allowed)',
 ];
