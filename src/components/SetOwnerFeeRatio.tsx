@@ -13,7 +13,7 @@ export const SetOwnerFeeRatio = (props: { signer: Signer; data: VaultData }) => 
     const rawFeeRatio = BN(feeRatio).mul(BN(1000));
     const gasLimit = (await vault.estimateGas.setCollectionOwnerFeeRatio(rawFeeRatio)).mul(BN(12).div(10));
     const { maxPriorityFeePerGas, maxFeePerGas } = await vault.provider.getFeeData();
-    await vault.estimateGas.setCollectionOwnerFeeRatio(rawFeeRatio, {
+    await vault.setCollectionOwnerFeeRatio(rawFeeRatio, {
       maxPriorityFeePerGas,
       maxFeePerGas,
       gasLimit,
