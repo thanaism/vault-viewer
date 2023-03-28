@@ -9,6 +9,7 @@ export const VaultPropForm = (props: {
   submitLabel?: string;
   submit?: () => void;
   readOnly?: boolean;
+  invalid?: boolean;
 }) => {
   const { leftLabel, value, submitLabel, placeholder, readOnly, onChange, submit } = props;
   const nonReadOnlyPropExists = submit != null || submitLabel != null || onChange != null;
@@ -39,6 +40,7 @@ export const VaultPropForm = (props: {
             size="sm"
             fontWeight="midium"
             fontSize="xs"
+            isDisabled={!!props.invalid}
           >
             {submitLabel}
           </Button>

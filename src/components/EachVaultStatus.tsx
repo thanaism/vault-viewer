@@ -7,6 +7,7 @@ import { CheckTokenId } from './CheckTokenId';
 import { ReadOnlyVaultProps } from './ReadOnlyVaultProps';
 import { SetOwnerFeeRatio } from './SetOwnerFeeRatio';
 import { SetTokenIdAllowed } from './SetTokenIdAllowed';
+import { SetPayoutAddress } from './SetPayoutAddress';
 
 const EachVaultStatus = (props: { chainId: string; signer: Signer }) => {
   const vaultData = useVaultData(props);
@@ -25,6 +26,7 @@ const EachVaultStatus = (props: { chainId: string; signer: Signer }) => {
           <SetOwnerFeeRatio signer={signer} data={data} key={data.vaultAddress + 'feeRatio'} />
           <CheckTokenId data={data} signer={props.signer} />
           <SetTokenIdAllowed data={data} signer={props.signer} />
+          <SetPayoutAddress data={data} signer={props.signer} />
         </Box>
       ))}
     </>
